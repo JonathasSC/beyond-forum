@@ -1,27 +1,12 @@
 <template>
-  <main class="main">
-    <UserCrud />
-    <PostCrud />
-  </main>
+  <main class="main"></main>
 </template>
 
 <script>
-import UserCrud from "../components/UserCrud";
-import PostCrud from "../components/PostCrud";
-
 export default {
   name: "Home",
-
-  components: {
-    UserCrud,
-    PostCrud,
-  },
+  components: {},
 };
 </script>
 
-<style>
-.main {
-  width: 100vh;
-  height: 100%;
-}
-</style>
+<style></style>

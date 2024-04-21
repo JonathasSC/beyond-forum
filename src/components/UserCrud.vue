@@ -2,7 +2,7 @@
   <div class="crud">
     <div class="crud__internal__container">
       <div class="crud__formtoggle">
-        <button @click="toggleForm" v-if="!showForm">ADD PERSON +</button>
+        <router-link to="/newuser">ADD USER +</router-link>
       </div>
       <form class="crud__form" @submit.prevent="addUser" v-if="showForm">
         <input
@@ -10,25 +10,25 @@
           type="text"
           required
           v-model="newUser.username"
-          placeholder="username"
+          placeholder="Username"
         />
         <input
           class="crud__form__input"
           type="text"
           required
           v-model="newUser.email"
-          placeholder="email"
+          placeholder="Email"
         />
         <input
           class="crud__form__input"
           type="password"
           required
           v-model="newUser.password"
-          placeholder="password"
+          placeholder="Password"
         />
-        <button class="crud__form__button" type="submit">Adicionar</button>
+        <button class="crud__form__button" type="submit">Add</button>
         <button @click="toggleForm" v-if="showForm" class="crud__form__button">
-          Cancelar
+          Cancel
         </button>
       </form>
 
@@ -102,20 +102,7 @@ export default {
   components: {},
   data() {
     return {
-      users: [
-        {
-          username: "Jonathas",
-          email: "jonathas@example.com",
-          password: "senha123",
-          editing: false,
-        },
-        {
-          username: "Maria",
-          email: "maria@example.com",
-          password: "maria456",
-          editing: false,
-        },
-      ],
+      users: [],
       newUser: {
         username: "",
         email: "",
@@ -125,6 +112,9 @@ export default {
       currentPage: 1,
       showForm: false,
     };
+  },
+  created() {
+    this.loadUsersFromLocalStorage();
   },
   computed: {
     paginatedUsers() {
@@ -139,6 +129,7 @@ export default {
   methods: {
     addUser() {
       this.users.push({ ...this.newUser, editing: false });
+      this.saveUsersToLocalStorage();
       this.clearFields();
       this.toggleForm();
     },
@@ -154,15 +145,24 @@ export default {
     },
     finishEdit(user) {
       user.editing = false;
+      this.saveUsersToLocalStorage();
     },
     removeUser(index) {
       this.users.splice(index, 1);
+      this.saveUsersToLocalStorage();
     },
     onChangePage(page) {
       this.currentPage = page;
     },
     toggleForm() {
       this.showForm = !this.showForm;
+    },
+    loadUsersFromLocalStorage() {
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      this.users = users;
+    },
+    saveUsersToLocalStorage() {
+      localStorage.setItem("users", JSON.stringify(this.users));
     },
   },
 };

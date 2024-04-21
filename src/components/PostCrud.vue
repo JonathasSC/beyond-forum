@@ -2,29 +2,29 @@
   <div class="crud">
     <div class="crud__internal__container">
       <div class="crud__formtoggle">
-        <button @click="toggleForm" v-if="!showForm">ADD PERSON +</button>
+        <router-link to="/newpost">ADD POST +</router-link>
       </div>
-      <form class="crud__form" @submit.prevent="addUser" v-if="showForm">
+      <form class="crud__form" @submit.prevent="addPost" v-if="showForm">
         <input
           class="crud__form__input"
           type="text"
           required
-          v-model="newUser.username"
-          placeholder="username"
+          v-model="newPost.owner_username"
+          placeholder="owner"
         />
         <input
           class="crud__form__input"
           type="text"
           required
-          v-model="newUser.email"
-          placeholder="email"
+          v-model="newPost.title"
+          placeholder="title"
         />
         <input
           class="crud__form__input"
-          type="password"
+          type="text"
           required
-          v-model="newUser.password"
-          placeholder="password"
+          v-model="newPost.description"
+          placeholder="description"
         />
         <button class="crud__form__button" type="submit">Adicionar</button>
         <button @click="toggleForm" v-if="showForm" class="crud__form__button">
@@ -35,52 +35,52 @@
       <table class="crud__table">
         <tr
           class="crud__table__row"
-          v-for="(user, index) in paginatedUsers"
+          v-for="(post, index) in paginatedPosts"
           :key="index"
         >
           <td class="crud__table__cell">
-            <span v-if="!user.editing">{{ user.username }}</span>
+            <span v-if="!post.editing">{{ post.owner_username }}</span>
             <input
               v-else
               type="text"
               class="crud__table__input"
-              v-model="user.username"
-              @blur="finishEdit(user)"
+              v-model="post.owner_username"
+              @blur="finishEdit(post)"
             />
           </td>
 
           <td class="crud__table__cell">
-            <span v-if="!user.editing">{{ user.email }}</span>
+            <span v-if="!post.editing">{{ post.title }}</span>
             <input
               v-else
               type="text"
               class="crud__table__input"
-              v-model="user.email"
-              @blur="finishEdit(user)"
+              v-model="post.title"
+              @blur="finishEdit(post)"
             />
           </td>
 
           <td class="crud__table__cell">
-            <span v-if="!user.editing">{{ user.password }}</span>
+            <span v-if="!post.editing">{{ post.description }}</span>
             <input
               class="crud__table__input"
               v-else
               type="text"
-              v-model="user.password"
-              @blur="finishEdit(user)"
+              v-model="post.description"
+              @blur="finishEdit(post)"
             />
           </td>
 
           <td class="crud__table__cell action">
-            <button class="crud__table__btn" @click="toggleEdit(user)">
+            <button class="crud__table__btn" @click="toggleEdit(post)">
               <span class="material-symbols-outlined">
-                {{ user.editing ? "save" : "edit" }}
+                {{ post.editing ? "save" : "edit" }}
               </span>
             </button>
           </td>
 
           <td class="crud__table__cell action">
-            <button class="crud__table__btn" @click="removeUser(index)">
+            <button class="crud__table__btn" @click="removePost(index)">
               <span class="material-symbols-outlined"> delete </span>
             </button>
           </td>
@@ -102,67 +102,67 @@ export default {
   components: {},
   data() {
     return {
-      users: [
-        {
-          username: "Jonathas",
-          email: "jonathas@example.com",
-          password: "senha123",
-          editing: false,
-        },
-        {
-          username: "Maria",
-          email: "maria@example.com",
-          password: "maria456",
-          editing: false,
-        },
-      ],
-      newUser: {
-        username: "",
-        email: "",
-        password: "",
+      posts: [],
+      newPost: {
+        owner_username: "",
+        title: "",
+        description: "",
       },
       itemsPerPage: 5,
       currentPage: 1,
       showForm: false,
     };
   },
+  created() {
+    this.loadPostsFromLocalStorage();
+  },
   computed: {
-    paginatedUsers() {
+    paginatedPosts() {
       const startIndex = (this.currentPage - 1) * this.itemsPerPage;
       const endIndex = startIndex + this.itemsPerPage;
-      return this.users.slice(startIndex, endIndex);
+      return this.posts.slice(startIndex, endIndex);
     },
     pages() {
-      return Math.ceil(this.users.length / this.itemsPerPage);
+      return Math.ceil(this.posts.length / this.itemsPerPage);
     },
   },
   methods: {
-    addUser() {
-      this.users.push({ ...this.newUser, editing: false });
+    addPost() {
+      this.posts.push({ ...this.newPost, editing: false });
+      this.savePostsToLocalStorage();
       this.clearFields();
       this.toggleForm();
     },
     clearFields() {
-      this.newUser = {
-        username: "",
-        email: "",
-        password: "",
+      this.newPost = {
+        owner_username: "",
+        title: "",
+        description: "",
       };
     },
-    toggleEdit(user) {
-      user.editing = !user.editing;
+    toggleEdit(post) {
+      post.editing = !post.editing;
     },
-    finishEdit(user) {
-      user.editing = false;
+    finishEdit(post) {
+      post.editing = false;
+      this.savePostsToLocalStorage();
     },
-    removeUser(index) {
-      this.users.splice(index, 1);
+    removePost(index) {
+      this.posts.splice(index, 1);
+      this.savePostsToLocalStorage();
     },
     onChangePage(page) {
       this.currentPage = page;
     },
     toggleForm() {
       this.showForm = !this.showForm;
+    },
+    loadPostsFromLocalStorage() {
+      const posts = JSON.parse(localStorage.getItem("posts")) || [];
+      this.posts = posts;
+    },
+    savePostsToLocalStorage() {
+      localStorage.setItem("posts", JSON.stringify(this.posts));
     },
   },
 };
