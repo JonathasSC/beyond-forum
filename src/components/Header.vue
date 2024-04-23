@@ -3,9 +3,13 @@
     <template v-slot:prepend>
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
     </template>
-    <v-app-bar-title>Fórum Administration</v-app-bar-title>
+    <v-app-bar-title>
+      <router-link class="header__link" to="/">
+        <span class="header__link__span">Administração</span>
+      </router-link>
+    </v-app-bar-title>
     <v-spacer></v-spacer>
-    <v-btn icon> <v-icon>mdi-account</v-icon></v-btn>
+    <!-- <v-btn icon> <v-icon>mdi-account</v-icon></v-btn> -->
   </v-app-bar>
 </template>
 
@@ -16,7 +20,18 @@ export default {
 </script>
 
 <style>
+.v-toolbar__content {
+  background: var(--color-gray-100);
+}
 .v-app-bar-title__content {
   display: -webkit-box;
+}
+.header__link {
+  text-decoration: none;
+}
+
+.header__link__span {
+  color: var(--color-blue-100);
+  font-weight: bold;
 }
 </style>

@@ -1,69 +1,47 @@
 <template>
-  <div class="crud">
-    <div class="crud__internal__container">
-      <div class="crud__formtoggle">
-        <router-link to="/newuser">ADD USER +</router-link>
-      </div>
-      <form class="crud__form" @submit.prevent="addUser" v-if="showForm">
-        <input
-          class="crud__form__input"
-          type="text"
-          required
-          v-model="newUser.username"
-          placeholder="Username"
-        />
-        <input
-          class="crud__form__input"
-          type="text"
-          required
-          v-model="newUser.email"
-          placeholder="Email"
-        />
-        <input
-          class="crud__form__input"
-          type="password"
-          required
-          v-model="newUser.password"
-          placeholder="Password"
-        />
-        <button class="crud__form__button" type="submit">Add</button>
-        <button @click="toggleForm" v-if="showForm" class="crud__form__button">
-          Cancel
-        </button>
-      </form>
+  <div class="user-list">
+    <table class="user-list__table">
+      <thead class="user-list__table__head">
+        <tr class="user-list__table__head__row">
+          <th class="user-list__table__head__th">Username</th>
+          <th class="user-list__table__head__th">Email</th>
+          <th class="user-list__table__head__th">Password</th>
+          <th colspan="4" class="user-list__table__head__th"></th>
+        </tr>
+      </thead>
 
-      <table class="crud__table">
+      <tbody>
         <tr
-          class="crud__table__row"
+          class="user-list__table__row"
           v-for="(user, index) in paginatedUsers"
           :key="index"
         >
-          <td class="crud__table__cell">
+          <td class="user-list__table__cell">
             <span v-if="!user.editing">{{ user.username }}</span>
             <input
               v-else
               type="text"
-              class="crud__table__input"
+              class="user-list__table__input"
               v-model="user.username"
               @blur="finishEdit(user)"
             />
           </td>
 
-          <td class="crud__table__cell">
+          <td class="user-list__table__cell">
             <span v-if="!user.editing">{{ user.email }}</span>
             <input
               v-else
               type="text"
-              class="crud__table__input"
+              class="user-list__table__input"
               v-model="user.email"
               @blur="finishEdit(user)"
             />
           </td>
 
-          <td class="crud__table__cell">
+          <td class="user-list__table__cell">
             <span v-if="!user.editing">{{ user.password }}</span>
             <input
-              class="crud__table__input"
+              class="user-list__table__input"
               v-else
               type="password"
               v-model="user.password"
@@ -71,28 +49,28 @@
             />
           </td>
 
-          <td class="crud__table__cell action">
-            <button class="crud__table__btn" @click="toggleEdit(user)">
+          <td class="user-list__table__cell action">
+            <button class="user-list__table__btn" @click="toggleEdit(user)">
               <span class="material-symbols-outlined">
                 {{ user.editing ? "save" : "edit" }}
               </span>
             </button>
           </td>
 
-          <td class="crud__table__cell action">
-            <button class="crud__table__btn" @click="removeUser(index)">
+          <td class="user-list__table__cell action">
+            <button class="user-list__table__btn" @click="removeUser(index)">
               <span class="material-symbols-outlined"> delete </span>
             </button>
           </td>
         </tr>
-      </table>
-      <v-pagination
-        v-model="currentPage"
-        :length="pages"
-        @input="onChangePage"
-        color="primary"
-      ></v-pagination>
-    </div>
+      </tbody>
+    </table>
+    <v-pagination
+      v-model="currentPage"
+      :length="pages"
+      @input="onChangePage"
+      color="primary"
+    ></v-pagination>
   </div>
 </template>
 
@@ -169,88 +147,47 @@ export default {
 </script>
 
 <style>
-.crud {
-  gap: 2rem;
-  height: 100%;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
+.user-list__table__head {
+  background-color: var(--color-blue-100);
+  width: 100%;
+  text-align: left;
 }
 
-.crud__internal__container {
-  gap: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+.user-list__table__head__th {
+  padding: 0.5rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: var(--color-white);
 }
 
-.crud__formtoggle {
+.user-list__form__input {
+  color: var(--color-white);
+}
+
+.user-list__table {
   width: 100%;
 }
 
-.crud__form {
-  width: 300px;
-  padding: 1rem;
-  border-radius: 10px;
-  gap: 14px;
-
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-
-  border: 1px solid red;
-}
-
-.crud__form__input,
-.crud__form__button {
-  padding: 10px;
-  width: 100%;
-  border: 1px solid red;
-}
-
-.crud__table__cell {
+.user-list__table__cell {
   padding: 5px;
 }
 
-.crud__table__row {
-  border: 2px solid red;
+.user-list__table__row:nth-child(odd) {
+  background-color: var(--color-gray-100);
 }
 
-.crud__table__row:nth-child(odd) {
-  background-color: var(--color-gray);
-}
-
-.crud__table__cell,
-.crud__table__input {
+.user-list__table__cell,
+.user-list__table__input {
   width: 170px;
+
+  color: var(--color-white);
 }
 
-.crud__table__btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.user-list__table__cell.action {
   width: 20px;
 }
 
-.crud__table__cell {
-  border-bottom: 1px solid red;
-}
-
-.crud__table__cell.action {
-  width: 20px;
-}
-
-.crud__table__cell.action span {
+.user-list__table__cell.action span {
   transform: translateY(5px);
-}
-
-.crud__table {
-  border: 1px solid red;
-  padding: 10px;
-  border-radius: 10px;
 }
 </style>

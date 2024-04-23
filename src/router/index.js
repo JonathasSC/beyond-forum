@@ -2,7 +2,6 @@ import Vue from "vue";
 
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import AboutView from "../views/AboutView.vue";
 import NewPostView from "../views/NewPostView.vue";
 import NewUserView from "../views/NewUserView.vue";
 import PostView from "../views/PostView.vue";
@@ -25,11 +24,6 @@ const routes = [
     path: "/newuser",
     name: "newuser",
     component: NewUserView,
-  },
-  {
-    path: "/about",
-    name: "about",
-    component: AboutView,
   },
   {
     path: "/post",

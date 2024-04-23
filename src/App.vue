@@ -1,22 +1,25 @@
 <template>
   <v-app>
     <v-main>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/newpost">New Post</router-link> |
-      <router-link to="/newuser">New Post</router-link> |
-      <router-link to="/post">Post</router-link> |
-      <router-link to="/user">User</router-link>
+      <Header />
       <router-view />
     </v-main>
   </v-app>
 </template>
 
 <script>
+import Header from "./components/Header";
 export default {
   name: "App",
-  data: () => ({
-    //
-  }),
+  components: {
+    Header,
+  },
+  data: () => ({}),
 };
 </script>
+
+<style>
+.v-main__wrap {
+  background-color: var(--color-gray-200);
+}
+</style>

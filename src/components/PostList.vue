@@ -1,119 +1,86 @@
 <template>
-  <div class="crud">
-    <div class="crud__internal__container">
-      <div class="crud__formtoggle">
-        <router-link to="/newpost">ADD POST +</router-link>
-      </div>
-      <form class="crud__form" @submit.prevent="addPost" v-if="showForm">
-        <input
-          class="crud__form__input"
-          type="text"
-          required
-          v-model="newPost.owner_username"
-          placeholder="owner"
-        />
-        <input
-          class="crud__form__input"
-          type="text"
-          required
-          v-model="newPost.title"
-          placeholder="title"
-        />
-        <input
-          class="crud__form__input"
-          type="text"
-          required
-          v-model="newPost.description"
-          placeholder="description"
-        />
-        <button class="crud__form__button" type="submit">Adicionar</button>
-        <button @click="toggleForm" v-if="showForm" class="crud__form__button">
-          Cancelar
-        </button>
-      </form>
+  <div class="post-list">
+    <table class="post-list__table">
+      <thead class="post-list__table__head">
+        <tr class="post-list__table__head__row">
+          <th class="post-list__table__head__th">OWNER USERNAME</th>
+          <th class="post-list__table__head__th">TITLE</th>
+          <th class="post-list__table__head__th">DESCRIPTION</th>
+          <th colspan="4" class="post-list__table__head__th"></th>
+        </tr>
+      </thead>
 
-      <table class="crud__table">
-        <thead>
-          <tr>
-            <td>OWNER</td>
-            <td>TITLE</td>
-            <td>DESCRIPTION</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            class="crud__table__row"
-            v-for="(post, index) in paginatedPosts"
-            :key="index"
-          >
-            <td class="crud__table__cell">
-              <span class="crud__table__text" v-if="!post.editing">{{
-                post.owner_username
-              }}</span>
-              <input
-                v-else
-                type="text"
-                class="crud__table__input"
-                v-model="post.owner_username"
-                @blur="finishEdit(post)"
-              />
-            </td>
+      <tbody>
+        <tr
+          class="post-list__table__row"
+          v-for="(post, index) in paginatedPosts"
+          :key="index"
+        >
+          <td class="post-list__table__cell">
+            <span v-if="!post.editing">{{ post.owner_username }}</span>
+            <input
+              v-else
+              type="text"
+              class="post-list__table__input"
+              v-model="post.owner_username"
+              @blur="finishEdit(post)"
+            />
+          </td>
 
-            <td class="crud__table__cell">
-              <span class="crud__table__text" v-if="!post.editing">
-                {{ post.title }}
+          <td class="post-list__table__cell">
+            <span v-if="!post.editing">
+              {{ post.title }}
+            </span>
+            <input
+              v-else
+              type="text"
+              class="post-list__table__input"
+              v-model="post.title"
+              @blur="finishEdit(post)"
+            />
+          </td>
+
+          <td class="post-list__table__cell">
+            <span v-if="!post.editing">
+              {{ post.description }}
+            </span>
+            <input
+              class="post-list__table__input"
+              v-else
+              type="text"
+              v-model="post.description"
+              @blur="finishEdit(post)"
+            />
+          </td>
+
+          <td class="post-list__table__cell action">
+            <button class="post-list__table__btn" @click="toggleEdit(post)">
+              <span class="material-symbols-outlined">
+                {{ post.editing ? "save" : "edit" }}
               </span>
-              <input
-                v-else
-                type="text"
-                class="crud__table__input"
-                v-model="post.title"
-                @blur="finishEdit(post)"
-              />
-            </td>
+            </button>
+          </td>
 
-            <td class="crud__table__cell">
-              <span class="crud__table__text" v-if="!post.editing">
-                {{ post.description }}
-              </span>
-              <input
-                class="crud__table__input"
-                v-else
-                type="text"
-                v-model="post.description"
-                @blur="finishEdit(post)"
-              />
-            </td>
-
-            <td class="crud__table__cell action">
-              <button class="crud__table__btn" @click="toggleEdit(post)">
-                <span class="material-symbols-outlined">
-                  {{ post.editing ? "save" : "edit" }}
-                </span>
-              </button>
-            </td>
-
-            <td class="crud__table__cell action">
-              <button class="crud__table__btn" @click="removePost(index)">
-                <span class="material-symbols-outlined"> delete </span>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <v-pagination
-        v-model="currentPage"
-        :length="pages"
-        @input="onChangePage"
-        color="primary"
-      ></v-pagination>
-    </div>
+          <td class="post-list__table__cell action">
+            <button class="post-list__table__btn" @click="removePost(index)">
+              <span class="material-symbols-outlined"> delete </span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <v-pagination
+      v-model="currentPage"
+      :length="pages"
+      @input="onChangePage"
+      color="primary"
+    ></v-pagination>
   </div>
 </template>
 
 <script>
 export default {
-  name: "PostCrud",
+  name: "Postlist",
   components: {},
   data() {
     return {
@@ -184,100 +151,47 @@ export default {
 </script>
 
 <style>
-.crud {
-  gap: 2rem;
-  height: 100%;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
+.post-list__table__head {
+  background-color: var(--color-blue-100);
+  width: 100%;
+  text-align: left;
 }
 
-.crud__table {
-  width: 570px;
+.post-list__table__head__th {
+  padding: 0.5rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: var(--color-white);
 }
 
-.crud__internal__container {
-  gap: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+.post-list__form__input {
+  color: var(--color-white);
 }
 
-.crud__formtoggle {
+.post-list__table {
   width: 100%;
 }
 
-.crud__form {
-  width: 300px;
-  padding: 1rem;
-  border-radius: 10px;
-  gap: 14px;
-
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-
-  border: 1px solid red;
-}
-
-.crud__form__input,
-.crud__form__button {
-  padding: 10px;
-  width: 100%;
-  border: 1px solid red;
-}
-
-.crud__table__cell {
+.post-list__table__cell {
   padding: 5px;
 }
 
-.crud__table__row {
-  border: 2px solid red;
+.post-list__table__row:nth-child(odd) {
+  background-color: var(--color-gray-100);
 }
 
-.crud__table__row:nth-child(odd) {
-  background-color: var(--color-gray);
-}
-
-.crud__table__cell,
-.crud__table__input {
+.post-list__table__cell,
+.post-list__table__input {
   width: 170px;
+
+  color: var(--color-white);
 }
 
-.crud__table__btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.post-list__table__cell.action {
   width: 20px;
 }
 
-.crud__table__cell {
-  -webkit-line-clamp: 3;
-  border-bottom: 1px solid red;
-  overflow: hidden;
-}
-
-.crud__table__cell.action {
-  width: 20px;
-}
-
-.crud__table__cell.action span {
+.post-list__table__cell.action span {
   transform: translateY(5px);
-}
-
-.crud__table {
-  border: 1px solid red;
-  padding: 10px;
-  border-radius: 10px;
-}
-.crud__table__text {
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
 }
 </style>
