@@ -1,19 +1,35 @@
 <template>
-  <main class="main">
-    <UserForm />
+  <main class="new-user">
+    <ModelForm :fields="formFields" model="users" route="/user" />
   </main>
 </template>
 
 <script>
-import UserForm from "../components/UserForm";
+import ModelForm from "../components/ModelForm";
 
 export default {
   name: "NewUserForm",
 
   components: {
-    UserForm,
+    ModelForm,
+  },
+  data() {
+    return {
+      formFields: {
+        username: "text",
+        email: "text",
+        password: "text",
+      },
+    };
   },
 };
 </script>
 
-<style></style>
+<style>
+.new-user {
+  padding: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>

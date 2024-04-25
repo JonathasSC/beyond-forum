@@ -9,7 +9,6 @@
       </router-link>
     </v-app-bar-title>
     <v-spacer></v-spacer>
-    <!-- <v-btn icon> <v-icon>mdi-account</v-icon></v-btn> -->
   </v-app-bar>
 </template>
 
@@ -23,9 +22,11 @@ export default {
 .v-toolbar__content {
   background: var(--color-gray-100);
 }
+
 .v-app-bar-title__content {
   display: -webkit-box;
 }
+
 .header__link {
   text-decoration: none;
 }

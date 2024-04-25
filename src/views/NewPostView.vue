@@ -1,19 +1,35 @@
 <template>
-  <main class="main">
-    <PostForm />
+  <main class="new-post">
+    <ModelForm :fields="formFields" model="posts" route="/post" />
   </main>
 </template>
 
 <script>
-import PostForm from "../components/PostForm";
+import ModelForm from "../components/ModelForm";
 
 export default {
   name: "NewPostView",
 
   components: {
-    PostForm,
+    ModelForm,
+  },
+  data() {
+    return {
+      formFields: {
+        owner_username: "text",
+        title: "text",
+        description: "textarea",
+      },
+    };
   },
 };
 </script>
 
-<style></style>
+<style>
+.new-post {
+  padding: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
