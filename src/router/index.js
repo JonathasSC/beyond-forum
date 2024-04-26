@@ -2,10 +2,14 @@ import Vue from "vue";
 
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
+
 import NewPostView from "../views/NewPostView.vue";
 import NewUserView from "../views/NewUserView.vue";
+import NewCommentView from "../views/NewCommentView.vue";
+
 import PostView from "../views/PostView.vue";
 import UserView from "../views/UserView.vue";
+import CommentView from "../views/CommentView.vue";
 
 Vue.use(VueRouter);
 
@@ -26,6 +30,11 @@ const routes = [
     component: NewUserView,
   },
   {
+    path: "/newcomment",
+    name: "newcomment",
+    component: NewCommentView,
+  },
+  {
     path: "/post",
     name: "post",
     component: PostView,
@@ -34,6 +43,11 @@ const routes = [
     path: "/user",
     name: "user",
     component: UserView,
+  },
+  {
+    path: "/comment",
+    name: "comment",
+    component: CommentView,
   },
 ];
 
