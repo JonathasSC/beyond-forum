@@ -14,12 +14,11 @@
           </th>
           <td align="right" class="homeview-main__table__data">
             <div class="homeview-main__table__data__div">
-              <span class="homeview-main__table__data__div__span">+</span>
               <router-link
                 class="homeview-main__table__data__link"
                 to="/newuser"
               >
-                <span>Adicionar</span>
+                <v-btn text color="primary"> + Adicionar </v-btn>
               </router-link>
             </div>
           </td>
@@ -32,12 +31,28 @@
           </th>
           <td align="right" class="homeview-main__table__data">
             <div class="homeview-main__table__data__div">
-              <span class="homeview-main__table__data__div__span">+</span>
               <router-link
                 class="homeview-main__table__data__link"
                 to="/newpost"
               >
-                <span>Adicionar</span>
+                <v-btn text color="primary"> + Adicionar </v-btn>
+              </router-link>
+            </div>
+          </td>
+        </tr>
+        <tr class="homeview-main__table__row">
+          <th align="left" scope="row" class="homeview-main__table__data">
+            <router-link class="homeview-main__table__data__link" to="/comment">
+              <span>Comentários</span>
+            </router-link>
+          </th>
+          <td align="right" class="homeview-main__table__data">
+            <div class="homeview-main__table__data__div">
+              <router-link
+                class="homeview-main__table__data__link"
+                to="/newcomment"
+              >
+                <v-btn text color="primary"> + Adicionar </v-btn>
               </router-link>
             </div>
           </td>

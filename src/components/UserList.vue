@@ -58,9 +58,37 @@
           </td>
 
           <td class="user-list__table__cell action">
-            <button class="user-list__table__btn" @click="removeUser(index)">
-              <span class="material-symbols-outlined"> delete </span>
-            </button>
+            <v-dialog v-model="showDeleteConfirmation" width="500">
+              <template v-slot:activator="{ on, attrs }">
+                <button
+                  class="user-list__table__btn"
+                  @click="removeUser(index)"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <span class="material-symbols-outlined"> delete </span>
+                </button>
+              </template>
+
+              <v-card>
+                <v-card-title class="text-h5 grey lighten-2">
+                  Confirm Deletion
+                </v-card-title>
+
+                <v-card-text>
+                  Are you sure you want to delete this user?
+                </v-card-text>
+
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="primary" text @click="confirmDelete">
+                    Yes, delete
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </td>
         </tr>
       </tbody>
@@ -80,6 +108,7 @@ export default {
   components: {},
   data() {
     return {
+      dialog: false,
       users: [],
       newUser: {
         username: "",
@@ -89,6 +118,8 @@ export default {
       itemsPerPage: 5,
       currentPage: 1,
       showForm: false,
+      confirmDeleteIndex: -1,
+      showDeleteConfirmation: false,
     };
   },
   created() {
@@ -126,8 +157,16 @@ export default {
       this.saveUsersToLocalStorage();
     },
     removeUser(index) {
-      this.users.splice(index, 1);
-      this.saveUsersToLocalStorage();
+      this.confirmDeleteIndex = index;
+      this.showDeleteConfirmation = true;
+    },
+    confirmDelete() {
+      if (this.confirmDeleteIndex !== -1) {
+        this.users.splice(this.confirmDeleteIndex, 1);
+        this.saveUsersToLocalStorage();
+        this.showDeleteConfirmation = false;
+        this.confirmDeleteIndex = -1;
+      }
     },
     onChangePage(page) {
       this.currentPage = page;

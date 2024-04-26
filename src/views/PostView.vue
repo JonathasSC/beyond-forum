@@ -1,7 +1,9 @@
 <template>
   <main class="postview-main">
     <div class="postview-container">
-      <AddBtn title="ADICIONAR PUBLICAÇÃO +" route="/newpost" />
+      <router-link class="homeview-main__table__data__link" to="/newpost">
+        <v-btn color="primary" elevation="7">Adicionar publicação +</v-btn>
+      </router-link>
       <PostList />
     </div>
   </main>
