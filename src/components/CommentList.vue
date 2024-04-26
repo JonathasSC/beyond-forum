@@ -74,20 +74,23 @@
                 </button>
               </template>
 
-              <v-card>
-                <v-card-title class="text-h5 grey lighten-2">
+              <v-card class="gray200">
+                <v-card-title class="text-h5 blue200 lighten-2">
                   Confirm Deletion
                 </v-card-title>
 
                 <v-card-text>
-                  Are you sure you want to delete this comment?
+                  <br />
+                  <span style="color: var(--color-white)">
+                    Are you sure you want to delete this comment?</span
+                  >
                 </v-card-text>
 
                 <v-divider></v-divider>
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="primary" text @click="confirmDelete">
+                  <v-btn color="red" text @click="confirmDelete">
                     Yes, delete
                   </v-btn>
                 </v-card-actions>
